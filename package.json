@@ -1,0 +1,16 @@
+{
+  "name": "tutor-calendar",
+  "version": "1.0.0",
+  "description": "A NodeJS app that accesses my Google calendar and populates my tutoring spreadsheet with upcoming sessions",
+  "main": "calendar.js",
+  "scripts": {
+  },
+  "author": "Stephen Chapman",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "googleapis": "^32.0.0",
+    "moment": "^2.22.2",
+    "xlsx-populate": "^1.17.0"
+  }
+}
