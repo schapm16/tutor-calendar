@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "A NodeJS app that accesses my Google calendar and populates my tutoring spreadsheet with upcoming sessions",
   "main": "calendar.js",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "Stephen Chapman",
   "license": "ISC",
   "dependencies": {

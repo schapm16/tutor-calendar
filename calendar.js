@@ -9,35 +9,39 @@ Promise.all([calendarAPI(), excel.read()])
 		let sessionsToWrite = [];
 		calendarData.forEach(newSessionOnCalendar => {
 			let newSession = [];
-			let lastRecordedSession = findLastRecordedSession(newSessionOnCalendar, logData);
 			
-			if (newSessionOnCalendar.studentEmail === 'No Email' && hasUniqueStartTime(newSessionOnCalendar, logData)) {
-				newSession[5] = new Date(newSessionOnCalendar.startTime);
-				newSession.fill('*', 0, 5);
-				sessionsToWrite.push(newSession);
-			}
-
-			else if (lastRecordedSession && lastRecordedSession.isBefore) {
-				newSession = lastRecordedSession.sessionData.map((column, index) => {
-					if (index === 5) return new Date(newSessionOnCalendar.startTime);
-					else return column;
-				})
-				newSession = newSession.slice(0, 7);
-				sessionsToWrite.push(newSession);
-			}
-
-			else if (!lastRecordedSession) {
-				let rosterEntry = findOnRoster(newSessionOnCalendar, rosterData);
-
-				if (rosterEntry) {
-					newSession = rosterEntry;
-					newSession[5] = new Date(newSessionOnCalendar.startTime);
+			if (hasUniqueStartTime(newSessionOnCalendar, logData)) {
+				let lastRecordedSession = findLastRecordedSession(newSessionOnCalendar, logData);
+				
+				if (lastRecordedSession) {
+					newSession = lastRecordedSession.map((column, index) => {
+						if (index === 5) return new Date(newSessionOnCalendar.startTime);
+						else return column;
+					})
+					newSession = newSession.slice(0, 7);
 					sessionsToWrite.push(newSession);
-				} else {
-					console.log('The following session was not imported ' + newSessionOnCalendar.startTime);
+				}
+
+				else {
+					let rosterEntry = findOnRoster(newSessionOnCalendar, rosterData);
+
+					if (newSessionOnCalendar.studentEmail === 'No Email' || !rosterEntry) {
+						newSession[5] = new Date(newSessionOnCalendar.startTime);
+						newSession.fill('*', 0, 5);
+						sessionsToWrite.push(newSession);
+					}
+
+					else if (rosterEntry) {
+						newSession = rosterEntry;
+						newSession[5] = new Date(newSessionOnCalendar.startTime);
+						sessionsToWrite.push(newSession);
+					} 
+
+					else {
+						console.log('The following session was not imported ' + newSessionOnCalendar.startTime);
+					}
 				}
 			}
-
 		});
 		
 		if (sessionsToWrite.length < 1) return console.log('Spreadsheet Already Up To Date!');
