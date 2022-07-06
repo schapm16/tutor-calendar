@@ -9,7 +9,7 @@
   "dependencies": {
     "dotenv": "^6.0.0",
     "googleapis": "^32.0.0",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "xlsx-populate": "^1.17.0"
   }
 }
